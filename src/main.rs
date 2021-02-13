@@ -7,7 +7,7 @@ extern crate log;
 
 #[tokio::main]
 async fn main() {
-    let assets = warp::path("static").and(fs::dir("../assets"));
+    let assets = warp::path("static").and(fs::dir("./assets"));
 
     let filter = std::env::var("RUST_LOG").unwrap_or_else(|_| "tracing=info,warp=debug".to_owned());
 
@@ -23,9 +23,6 @@ async fn main() {
             format!("Hello, {}!", name)
         });
 
-
     let route = warp::get().and(root.or(assets).or(hello)).with(trace::request());
-    warp::serve(route)
-        .run(([0, 0, 0, 0], 8080))
-        .await;
+    warp::serve(route).run(([0, 0, 0, 0], 8080)).await;
 }

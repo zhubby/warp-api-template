@@ -1,6 +1,6 @@
 [package]
 name = "warp-api-template"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["zhubby <yanvalue@gmail.com>"]
 edition = "2018"
 
