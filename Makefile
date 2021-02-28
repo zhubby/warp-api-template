@@ -1,9 +1,14 @@
-.PHONY: build.linux build build.docker clean build.release tag
+.PHONY: build.linux build image clean build.release tag push run
 
 TAG ?= $(shell git describe --tags --always --dirty)
+BINARY ?= warp-api-template
+OWNER ?= zhubby
 
 tag:
 	@echo $(TAG)
+
+run:
+	cargo run
 
 clean:
 	cargo clean
@@ -17,5 +22,8 @@ build.release:
 build.linux:
 	cargo build --target x86_64-unknown-linux-musl --release
 
-build.docker: build.linux
-	docker build -t ghcr.io/zhubby/warp-api-template:$(TAG) -f Dockerfile .
+image: build.linux
+	docker build -t ghcr.io/$(OWNER)/$(BINARY):$(TAG) -f Dockerfile .
+
+push:
+	docker ghcr.io/$(OWNER)/$(BINARY):$(TAG)
